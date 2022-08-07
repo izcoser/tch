@@ -1,6 +1,7 @@
 import Link from "next/link"
 import useSWR from 'swr'
 import Post, { PostData } from "../components/posts/post"
+import Thread from "../components/posts/thread"
 
 function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
@@ -22,14 +23,19 @@ export default function Board() {
   if (error || photoError) return <div>failed to load</div>
   if (!data || !photoData) return <div>loading...</div>
 
-  const posts = data.map((p: PostResponse, i: number) =>
+  const posts: PostData[] = data.map((p: PostResponse, i: number) =>
     ({ title: p.title, body: p.body, id: p.id, userId: p.userId, url: photoData[i].url, thumbnailUrl: photoData[i].thumbnailUrl }))
+
+  const threads: PostData[][] = []
+  while(posts.length){
+    threads.push(posts.splice(0, 10));
+  }
 
   return (
     <div className="color-pink grid justify-items-center grid-cols-1 gap-5 content-center">
-      {posts.map((p: PostData) =>
-        (<Post title={p.title} body={p.body} id={p.id} userId={p.userId} url={p.url} thumbnailUrl={p.thumbnailUrl} key={p.id}></Post>)
-      )}
+      {
+        threads.map((posts: PostData[]) => (<Thread posts={posts} key={posts[0].id + 't'}></Thread>))
+      }
     </div>
   )
 }

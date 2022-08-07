@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React, { useState } from 'react';
 
 export interface PostData {
@@ -9,12 +10,34 @@ export interface PostData {
   url: string;
 }
 
+type ImageState = {
+  expanded: boolean,
+  height: number,
+  width: number,
+}
+
+function reverseImageState(im: ImageState) {
+  if (im.expanded) {
+    return { expanded: false, height: 150, width: 150 };
+  }
+  return { expanded: true, height: 600, width: 600 };
+}
+
 export default function Post(props: PostData) {
-  const [expandedImage, setExpandedImage] = useState(false);
+  const [imageState, setImageState] = useState({ expanded: false, height: 150, width: 150 });
+  const [hiddenPost, setHiddenPost] = useState(false);
+
+  if (hiddenPost) {
+    return <div className="text-black hover:cursor-pointer" onClick={() => setHiddenPost(!hiddenPost)}>Toggle hide</div>
+  }
+
   return (
-    <div className="w-8/12 text-center rounded-md border bg-purple-900" key={props.id}>
+    <div className="w-11/12 text-center rounded-md border bg-purple-900" key={props.id}>
       <div className="text-fuchsia-200 text-2xl"><span className="text-slate-900/100">No. {props.id}</span> {props.title}</div>
       <div className="text-indigo-200">{props.body}</div>
-      <img className="m-auto max-w-xs object-contain" src={expandedImage ? props.url : props.thumbnailUrl} onClick={() => setExpandedImage(!expandedImage)}></img>
-    </div>)
+      <Image height={imageState.width} width={imageState.width} layout="intrinsic" src={imageState.expanded ? props.url : props.thumbnailUrl}
+        onClick={() => setImageState(reverseImageState(imageState))}></Image>
+      <div className="text-black hover:cursor-pointer" onClick={() => setHiddenPost(!hiddenPost)}>Toggle hide</div>
+    </div>
+  )
 }
