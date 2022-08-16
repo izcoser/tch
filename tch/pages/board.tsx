@@ -24,7 +24,7 @@ export default function Board() {
   if (!data || !photoData) return <div>loading...</div>
 
   const posts: PostData[] = data.map((p: PostResponse, i: number) =>
-    ({ title: p.title, body: p.body, id: p.id, userId: p.userId, url: photoData[i].url, thumbnailUrl: photoData[i].thumbnailUrl }))
+    ({ title: p.title, body: p.body, id: p.id, userId: p.userId, url: photoData[i].url + '.png', thumbnailUrl: photoData[i].thumbnailUrl + '.png' }))
 
   const threads: PostData[][] = []
   while(posts.length){
