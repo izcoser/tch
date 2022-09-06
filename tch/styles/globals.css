@@ -29,14 +29,14 @@ a {
   }
 }
 
-.post:nth-child(2n+1){
+.post:nth-child(2n + 1) {
   background-color: #444;
 }
 
-.postTitle{
+.postTitle {
   color: white;
 }
 
-.postBody{
+.postBody {
   color: grey;
 }
