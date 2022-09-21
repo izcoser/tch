@@ -43,15 +43,8 @@ export default function Post(props: PostData) {
   }
 
   return (
-    /*<div className="w-11/12 text-center rounded-md border bg-purple-900" key={props.id}>
-      <div className="text-fuchsia-200 text-2xl"><span className="text-slate-900/100">No. {props.id}</span> {props.title}</div>
-      <div className="text-indigo-200">{props.body}</div>
-      <Image height={imageState.width} width={imageState.width} layout="intrinsic" src={imageState.expanded ? props.url : props.thumbnailUrl}
-        onClick={() => setImageState(reverseImageState(imageState))}></Image>
-      <div className="text-black hover:cursor-pointer" onClick={() => setHiddenPost(!hiddenPost)}>Toggle hide</div>
-    </div>*/
-    <div className="postCell my-4 mx-5" key={props.id}>
-      <div className="innerPost inline-block pr-1 ml-9 max-w-full align-top relative">
+    <div className="postCell my-1 mx-5" key={props.id}>
+      <div className="innerPost inline-block ml-8 max-w-full pr-1 relative align-top bg-indigo-500">
         <div className="contentOverflow max-h-[1400px] overflow-y-auto">
           <div className="panelUploads block">
             <figure className="uploadCell float-left my-5 mx-20 w-auto">

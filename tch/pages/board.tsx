@@ -7,7 +7,7 @@ function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
 
-interface PostResponse {
+export interface PostResponse {
   title: string;
   body: string;
   id: string;
@@ -16,7 +16,7 @@ interface PostResponse {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export default function Board() {
+export function getData() {
   const { data, error } = useSWR(
     "https://jsonplaceholder.typicode.com/posts",
     fetcher
@@ -25,11 +25,14 @@ export default function Board() {
     "https://jsonplaceholder.typicode.com/photos",
     fetcher
   );
+  return [data, error, photoData, photoError];
+}
 
-  if (error || photoError) return <div>failed to load</div>;
-  if (!data || !photoData) return <div>loading...</div>;
-
-  const posts: PostData[] = data.map((p: PostResponse, i: number) => ({
+export function getPosts(
+  data: Array<PostResponse>,
+  photoData: Array<any>
+): PostData[] {
+  return data.map((p: PostResponse, i: number) => ({
     title: p.title,
     body: p.body,
     id: p.id,
@@ -37,6 +40,14 @@ export default function Board() {
     url: photoData[i].url + ".png",
     thumbnailUrl: photoData[i].thumbnailUrl + ".png",
   }));
+}
+
+export default function Board() {
+  const [data, error, photoData, photoError] = getData();
+  if (error || photoError) return <div>failed to load</div>;
+  if (!data || !photoData) return <div>loading...</div>;
+
+  const posts = getPosts(data, photoData);
 
   const threads: PostData[][] = [];
   while (posts.length) {
